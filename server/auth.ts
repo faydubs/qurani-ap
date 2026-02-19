@@ -31,21 +31,28 @@ async function comparePasswords(supplied: string, stored: string) {
 
 export function setupAuth(app: Express) {
   const sessionSettings: session.SessionOptions = {
-    secret: process.env.SESSION_SECRET || "r4m4d4n_k4r33m_s3cr3t",
-    resave: false,
-    saveUninitialized: false,
-    store: storage.sessionStore,
-    cookie: {
-      secure: app.get("env") === "production",
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days for Ramadan
-    },
-  };
+   secret: process.env.SESSION_SECRET || "r4m4d4n_k4r33m_s3cr3t",
+  resave: false,
+  saveUninitialized: false,
+  store: storage.sessionStore,
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  },
+};
+
+
+
+
 
   app.set("trust proxy", 1);
   app.use(session(sessionSettings));
   app.use(passport.initialize());
   app.use(passport.session());
-
+ 
+  
   passport.use(
     new LocalStrategy(async (username, password, done) => {
       try {

@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api, type InsertUser } from "@shared/schema";
+import { type InsertUser } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 export function useUser() {
   return useQuery({
     queryKey: ["/api/user"],
     queryFn: async () => {
-      const res = await fetch("/api/user");
+      const res = await fetch("/api/user", {
+        credentials: "include",
+      });
+
       if (res.status === 401) return null;
       if (!res.ok) throw new Error("Failed to fetch user");
       return await res.json();
@@ -23,6 +26,7 @@ export function useLogin() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(credentials),
       });
 
@@ -58,6 +62,7 @@ export function useRegister() {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(userData),
       });
 
@@ -90,7 +95,10 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      await fetch("/api/logout", { method: "POST" });
+      await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
     },
     onSuccess: () => {
       queryClient.setQueryData(["/api/user"], null);

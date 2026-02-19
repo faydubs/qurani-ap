@@ -58,7 +58,7 @@ export default function AuthPage() {
             الرفيق القرآني
           </h1>
           <p className="text-muted-foreground text-center">
-            {isLogin ? "سجّل دخولك لمتابعة وردك اليومي" : "أنشئ حساباً جديداً وابدأ رحلتك"}
+            {isLogin ? "سجّل دخولك عشان تسابق خالي محمد للجنه" : "أنشئ حساباً جديداً وابدأ رحلتك"}
           </p>
         </div>
 
